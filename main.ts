@@ -1,3 +1,3 @@
 import {reorganizeStructure} from './src/reorganize-structure'
 
-reorganizeStructure()
+reorganizeStructure('controllers', 'services', 'repositories', 'entities');

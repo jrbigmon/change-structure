@@ -8,25 +8,25 @@ import { uninstallDepedencies } from "./resolve-dependecies/unistall-dependencie
 import { moveControllersAndRename } from "./methods-file/move-controllers-and-rename"
 import { createModuleInFolderRoutes } from "./methods-file/create-module-in-folders-routes";
 
-export function reorganizeStructure() {
+export function reorganizeStructure(folderNameController: string, folderNameService: string, folderNameRepositories: string, folderNameEntities: string) {
   installDependencies();
   createFolders('routes', 'src');
-  getFileNameToCreateFolderAndMove('src/repositories/entities');
-  getFileNameToCreateFolderAndMove('src/services/bo', 'service');
-  moveFoldersIn('src/services/bo/', 'src/routes/');
-  moveFoldersIn('src/repositories/entities', 'src/repositories');
+  getFileNameToCreateFolderAndMove(`src/${folderNameRepositories}/${folderNameEntities}`);
+  getFileNameToCreateFolderAndMove(`src/${folderNameService}/bo`, `${folderNameService}`);
+  moveFoldersIn(`src/${folderNameService}/bo`, 'src/routes/');
+  moveFoldersIn(`src/${folderNameRepositories}/${folderNameEntities}`, `src/${folderNameRepositories}`);
   moveFileToNewFolder(
-    'src/services/abstract.service.ts',
+    `src/${folderNameService}/abstract.service.ts`,
     'src/routes/abstract.service.ts',
   );
   moveFileToNewFolder(
-    'src/services/service.module.ts',
+    `src/${folderNameService}/service.module.ts`,
     'src/routes/routes.module.ts',
   );
-  removeFolders('src/repositories/entities');
-  removeFolders('src/services');
-  moveControllersAndRename('src/controller', 'src/routes');
-  removeFolders('src/controller');
+  removeFolders(`src/${folderNameRepositories}/${folderNameEntities}`);
+  removeFolders(`src/${folderNameService}`);
+  moveControllersAndRename(`src/${folderNameController}`, 'src/routes');
+  removeFolders(`src/${folderNameController}`);
   createModuleInFolderRoutes('src/routes');
   uninstallDepedencies();
 }
